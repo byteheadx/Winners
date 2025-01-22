@@ -14,35 +14,39 @@
     <!-- Include Handsontable JS -->
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <script>
-        const container = document.querySelector('#codeList');
+        const container = document.querySelector("#codeList");
 
-new Handsontable(container, {
-    data: [
-        ['1', 'Adidas White Sign', 'AB123'],
-        ['2', 'Nike Black Sign', 'CD456'],
-        ['3', 'Puma Red Sign', 'EF789'],
-        ['4', 'Reebok Blue Sign', 'GH012'],
-        ['5', 'Under Armour Green Sign', 'IJ345'],
-        ['6', 'New Balance Yellow Sign', 'KL678'],
-        ['7', 'Asics Orange Sign', 'MN901'],
-        ['8', 'Converse Purple Sign', 'OP234'],
-        ['9', 'Vans Pink Sign', 'QR567'],
-    ],
-    colHeaders: [
-        'ID',
-        'Description',
-        'Position',
-    ],
-      // enable filtering
-    filters: true,
-    // enable the column menu
-    dropdownMenu: true,
-    rowHeaders: true,
-    height: 'auto',
-    autoWrapRow: true,
-    autoWrapCol: true,
-    licenseKey: 'non-commercial-and-evaluation',
-    });
+        // Fetch data from JSON file
+        fetch('data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data || !data.data) {
+                throw new Error('Invalid data format');
+            }
+            new Handsontable(container, {
+                data: data.data,
+                colHeaders: [
+                    "ID",
+                    "Description",
+                    "Position",
+                ],
+                // enable filtering
+                filters: true,
+                // enable the column menu
+                dropdownMenu: true,
+                rowHeaders: true,
+                height: "auto",
+                autoWrapRow: true,
+                autoWrapCol: true,
+                licenseKey: "non-commercial-and-evaluation",
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
     </script>
 </body>
 </html>
